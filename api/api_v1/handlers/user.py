@@ -44,3 +44,16 @@ def update_user(user_id: int, data: UserUpdate, db: Session = Depends(get_db)):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=str(e)
         )
+
+@user_router.delete("/{user_id}")
+def delete_user(user_id: int, db: Session = Depends(get_db)):
+    try:
+        return UserService.delete_user(user_id, db)
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=str(e))
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )

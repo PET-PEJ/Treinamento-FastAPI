@@ -62,3 +62,15 @@ class UserService():
         db.commit()
         db.refresh(user)
         return user
+
+    @staticmethod
+    def delete_user(user_id: int, db: Session) -> dict:
+        user = db.query(User).filter(User.id == user_id).first()
+
+        if not user:
+            raise ValueError("Usuário não encontrado.")
+
+        db.delete(user)
+        db.commit()
+
+        return {"message": "Usuário removido do sistema com sucesso."}
